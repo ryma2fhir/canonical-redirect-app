@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, redirect
 
 app = Flask(__name__)
 
@@ -10,4 +10,10 @@ def home():
 @app.route('/<first>')
 @app.route('/<first>/<path:rest>')
 def fallback(first=None, rest=None):
-    return f'The current URL is: {request.url}'
+    # return f'The current URL is: {request.url}'
+    return redirect("https://simplifier.net/resolve?"\
+                    +"canonical="+str(request.url)
+                    +"&scope=hl7.fhir.r4.core@latest",
+                    code=302)
+
+    
