@@ -4,7 +4,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return f'Welcome to our URL redirector!'
+    return f'Welcome to our URL redirector!<br>'\
+            +f'Try: <a href=\"\Base\StructureDefinition\Patient">\Base\StructureDefinition\Patient</a>'
 
 @app.route('/')
 @app.route('/<first>')
