@@ -1,0 +1,9 @@
+You'll be redirected to <a href="{{redirect_url}}">{{redirect_url}}</a> in 5 seconds.
+
+<script>
+    setTimeout(function() {
+        var redirect_url = "{{redirect_url}}";
+        var correct_url = redirect_url.replace(/&amp;/g, '&');
+        window.location.href = correct_url;
+    }, 5000);
+</script>

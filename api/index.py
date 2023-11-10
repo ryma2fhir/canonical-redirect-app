@@ -1,20 +1,36 @@
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, render_template
 
 app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return f'Welcome to our URL redirector!<br>'\
-            +f'Try: <a href=\"\Base\StructureDefinition\Patient">\Base\StructureDefinition\Patient</a>'
+resolve_url = "https://simplifier.net/resolve?canonical={}&scope={}"
 
 @app.route('/')
-@app.route('/<first>')
-@app.route('/<first>/<path:rest>')
-def fallback(first=None, rest=None):
-    # return f'The current URL is: {request.url}'
-    return redirect("https://simplifier.net/resolve?"\
-                    +"canonical="+str(request.url)
-                    +"&scope=hl7.fhir.r4.core@latest",
-                    code=302)
+def home():
+    example_indirect_canonical = "/fhir/ca/StructureDefinition/MaintainedDevice"
+    example_direct_canonical = "/fhir/StructureDefinition/ACME-base-patient"
+    return render_template('home.html',
+                           example_indirect_canonical=example_indirect_canonical,
+                           example_direct_canonical=example_direct_canonical)
+
+@app.route('/fhir/ca/')
+@app.route('/fhir/ca/<path:rest>')
+def canonicalRedirectDirect(rest=None):
+    canonical = str(request.url)
+    scope = "acme.canada@latest"
+    redirect_url = resolve_url.format(canonical, scope)
+    return redirect(redirect_url, code=302)
+
+@app.route('/fhir/')
+@app.route('/fhir/<path:rest>')
+def canonicalRedirectIndirect(rest=None):
+    canonical = str(request.url)
+    scope = "acme.base.r4@latest"
+    redirect_url = resolve_url.format(canonical, scope)
+    return render_template('redirect.html', redirect_url=redirect_url)
+    
+@app.route('/<path:rest>')
+def Fallback(rest=None):
+    return render_template('other.html')
+
 
     
