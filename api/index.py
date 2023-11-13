@@ -18,7 +18,7 @@ def canonicalRedirectDirect(rest=None):
     canonical = str(request.url)
     scope = "acme.canada@latest"
     redirect_url = resolve_url.format(canonical, scope)
-    return redirect(redirect_url, code=302)
+    return redirect(redirect_url, code=301)
 
 @app.route('/fhir/')
 @app.route('/fhir/<path:rest>')
