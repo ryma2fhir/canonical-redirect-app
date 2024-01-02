@@ -6,7 +6,7 @@ resolve_url = "https://simplifier.net/resolve?canonical={}&scope={}"
 
 @app.route('/')
 def home():
-    example_indirect_canonical = "/fhir/ca/StructureDefinition/MaintainedDevice"
+    example_indirect_canonical = "StructureDefinition/UKCore-AllergyIntolerance"
     example_direct_canonical = "/fhir/StructureDefinition/ACME-base-patient"
     return render_template('home.html',
                            example_indirect_canonical=example_indirect_canonical,
@@ -16,7 +16,7 @@ def home():
 @app.route('/<path:rest>')
 def canonicalRedirectDirect(rest=None):
     canonical = str(request.url)
-    scope = "hl7fhirukcorer4"
+    scope = "hl7fhirukcorer4@current"
     redirect_url = resolve_url.format(canonical, scope)
     return redirect(redirect_url, code=301)
 
